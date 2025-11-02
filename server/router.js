@@ -23,15 +23,24 @@ const router = (app) => {
   // For example www.webpage.com
   app.get('/', controllers.index);
 
-  // catch for any other GET request. The *wild means anything
-  app.get('/*wild', controllers.notFound);
-
   // When someone POSTS to /setName, call controllers.setName
   // For example, a form submission to www.webpage.com/setName
   app.post('/setName', controllers.setName);
 
   // When someone POSTS to /updateLast, call controllers.updateLast
   app.post('/updateLast', controllers.updateLast);
+
+  // Create a new dog
+  app.post('/addDog', controllers.createDog);
+
+  // Update a dog's age by name
+  app.post('/updateDog', controllers.updateDogAge);
+
+  // Show all dogs on page4
+  app.get('/page4', controllers.getAllDogs);
+
+  // catch for any other GET request. The *wild means anything
+  app.get('/*wild', controllers.notFound);
 };
 
 // export the router function

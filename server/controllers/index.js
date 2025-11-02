@@ -4,6 +4,43 @@ const models = require('../models');
 // get the Cat model
 const { Cat } = models;
 
+//new homework controllers file for Dog model
+const Dog = require('../models/Dog');
+
+const createDog = async (req, res) => {
+  try {
+    const { name, breed, age } = req.body;
+    if (!name || !breed || !age) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const newDog = new Dog({ name, breed, age });
+    await newDog.save();
+    return res.json(newDog);
+  } catch (err) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const updateDogAge = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const dog = await Dog.findOne({ name });
+    if (!dog) {
+      return res.status(404).json({ error: 'Dog not found' });
+    }
+    dog.age += 1;
+    await dog.save();
+    return res.json(dog);
+  } catch (err) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const getAllDogs = async (req, res) => {
+  const dogs = await Dog.find().lean();
+  res.render('page4', { dogs });
+};
+
 // Function to handle rendering the index page.
 const hostIndex = async (req, res) => {
   //Start with the name as unknown
@@ -294,4 +331,13 @@ module.exports = {
   updateLast,
   searchName,
   notFound,
+
+  // Dog-related exports
+  createDog,
+  updateDogAge,
+  getAllDogs,
 };
+
+
+
+
